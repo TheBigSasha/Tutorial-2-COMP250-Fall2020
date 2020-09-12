@@ -5,4 +5,9 @@ public class Agent extends Client{
     public boolean isCop() {
         return true;
     }
+
+    @Override
+    public short getPickyness() {
+        return 5;
+    }
 }

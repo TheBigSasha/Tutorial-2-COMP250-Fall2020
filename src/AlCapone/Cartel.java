@@ -18,7 +18,7 @@ public class Cartel {
      * @param buyer the prospective buyer
      */
     public boolean sellProduct(Client buyer){
-        if(blacklist.contains(buyer) || buyer.isCop() || buyer instanceof UndercoverAgent || buyer instanceof Mafioso || buyer.getPickyness() > supplier.getQuality()){
+        if(blacklist.contains(buyer) || buyer.isCop() || buyer instanceof UndercoverAgent || (buyer instanceof Mafioso && ((Mafioso) buyer).getAssociatedCartel() != this) || buyer.getPickyness() > supplier.getQuality()){
            return false;
         }else if(!merchandise.isEmpty()) {
             long itemCost = merchandise.peek().getCost();
