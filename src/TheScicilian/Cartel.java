@@ -11,15 +11,24 @@ public class Cartel {
     private long money = 0;
     private ProductFactory supplier;
 
+    public Cartel(boolean isInfinite){
+        if(isInfinite) {
+            for (int i = 0; i < 1000; i++) {
+                merchandise.add(new PizzaFactory().create());
+            }
+        }
+    }
+
     /**
      * The Cartel won't sell to just anyone. In this method, we need to make sure the buyer is legit, hasn't been blacklisted, has enough money, and isn't too picky before we sell.
      *
      * @return true if the sale happens, else false
      * @param buyer the prospective buyer
+     *
      */
-    public boolean sellProduct(Client buyer){
-        if(blacklist.contains(buyer) || buyer.isCop() || buyer instanceof UndercoverAgent || (buyer instanceof Mafioso && ((Mafioso) buyer).getAssociatedCartel() != this) || buyer.getPickyness() > supplier.getQuality()){
-           return false;
+    public String sellProduct(Client buyer){
+        if(!checkBuyer(buyer)){
+           return "Buyer was bad!";
         }else if(!merchandise.isEmpty()) {
             long itemCost = merchandise.peek().getCost();
             long salePrice = buyer.buy(merchandise.pop());
@@ -28,10 +37,15 @@ public class Cartel {
                 dealWith(buyer);
             }
             money += (buyer.buy(merchandise.pop()));
-            return true;
+            return "Sold item to buyer of type " + buyer.getClass();
         }
 
-        return false;
+        return "Sale failed!";
+    }
+
+    private boolean checkBuyer(Client buyer) {
+        //TODO: Write this method! Check if the buyer is legit!
+        return true;
     }
 
     private static void dealWith(Client c){
@@ -54,22 +68,7 @@ public class Cartel {
      * @return true if the sale went through fully
      * @throws NoSupplierException if there isn't a supplier, we throw this exception
      */
-    public boolean buyProduct(int howMany) throws NoSupplierException {
-        if(supplier == null){
-            throw new NoSupplierException();
-        }
-        if (money > supplier.getPrice() * howMany) {
-            for (int i = 0; i < howMany; i++) {
-                Product p = supplier.create();
-                if (money - (p != null ? p.getCost() : 0) > 0) {
-                    merchandise.push(p);
-                    money -= p.getCost();
-                } else {
-                    return false;
-                }
-
-            }
-            return true;
-        }else{return false;}
+    public String buyProduct(int howMany) throws NoSupplierException {
+        return "";
     }
 }

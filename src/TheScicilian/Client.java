@@ -16,7 +16,17 @@ public abstract class Client {
         return merchandise.getCost();
     }
 
+
+
     public  abstract boolean isCop();
 
     public abstract short getPickyness();
+
+    public long getMoney() {
+        return money;
+    }
+
+    public void setMoney(long money) {
+        this.money = money;
+    }
 }
