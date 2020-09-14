@@ -75,17 +75,7 @@ public class BuyAndSell {
                     user.setMoney(dollars);
                 }else{
                     long dollars = user.getMoney();
-                    user = new Client() {
-                        @Override
-                        public boolean isCop() {
-                            return false;
-                        }
-
-                        @Override
-                        public short getPickyness() {
-                            return 3;
-                        }
-                    };
+                    user = new ShadyBuyer();
                     user.setMoney(dollars);
                 }
             }

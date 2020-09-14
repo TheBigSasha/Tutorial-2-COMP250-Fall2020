@@ -6,10 +6,11 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class Cartel {
     private String name;
-    private ArrayList<Client> blacklist = new ArrayList<>();
-    private Deque<Product> merchandise = new ConcurrentLinkedDeque<>();
-    private long money = 0;
-    private ProductFactory supplier;
+
+    ProductFactory supplier;
+    ArrayList<Client> blacklist = new ArrayList<>();
+    Deque<Product> merchandise = new ConcurrentLinkedDeque<>();
+    long money = 0;
 
     public Cartel(boolean isInfinite){
         if(isInfinite) {

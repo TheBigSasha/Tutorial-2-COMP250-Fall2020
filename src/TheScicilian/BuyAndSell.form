@@ -15,7 +15,7 @@
           <component id="3f2e6" class="javax.swing.JLabel" binding="BuyResult">
             <constraints/>
             <properties>
-              <text value="Label"/>
+              <text value="Status"/>
             </properties>
           </component>
         </children>
