@@ -1,4 +1,4 @@
-package AlCapone;
+package TheScicilian;
 
 public class Pizza extends Product{
     private static final long cost = 15;

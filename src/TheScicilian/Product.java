@@ -1,4 +1,4 @@
-package AlCapone;
+package TheScicilian;
 
 public abstract class Product {
     private static final long cost = 0;
