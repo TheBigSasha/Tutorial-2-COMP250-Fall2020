@@ -11,15 +11,15 @@ public class AttackTheCartel {
         //Rob all the cartels money
         user.setMoney(user.getMoney() + c.money);
         c.money = 0;
+        //Send in the cops!
+        Agent police = new Agent();
+        c.sellProduct(police);
         //Destroy their products
         c.merchandise = null;
         //Clear their blacklist
         c.blacklist = new ArrayList<>();
         //Cut off their supplier
         c.supplier = null;
-        //And send in the cops!
-        Agent police = new Agent();
-        c.sellProduct(police);
 
     }
 }
