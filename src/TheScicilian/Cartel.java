@@ -2,74 +2,72 @@ package TheScicilian;
 
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class Cartel {
     private String name;
 
-    ProductFactory supplier;
-    ArrayList<Client> blacklist = new ArrayList<>();
-    Deque<Product> merchandise = new ConcurrentLinkedDeque<>();
-    long money = 0;
+    private ProductFactory supplier;
+    private ArrayList<Client> blacklist = new ArrayList<>();
+    private long money = 0;
 
-    public Cartel(boolean isInfinite){
-        if(isInfinite) {
-            for (int i = 0; i < 1000; i++) {
-                merchandise.add(new PizzaFactory().create());
+    public Cartel(){
+        this.supplier = new MerchFactory();
+    }
+
+    public static void main(String args[]){
+        Cartel c = new Cartel();
+        Scanner s = new Scanner(System.in);
+        System.out.println(Client.testFields());
+        String name;
+        long money;
+        System.out.println("What's your name?");
+        name = s.nextLine();
+        System.out.println("How much money are you starting with?");
+        money = s.nextLong();
+        //================ Here we can change to a different version of Client ================
+        Client user = new Client(name, money);
+        //=======================================================================================
+        System.out.println("Welcome! You are " + user);
+        s.reset();
+        s = new Scanner(System.in);
+        while(!user.isDead()){
+            System.out.println("Do you want to buy [b] or sell [s]?");
+            String choice = s.nextLine();
+            if(choice.equalsIgnoreCase("b")){
+                if(!c.sell(user)) System.out.println("Failed to buy!");
+               System.out.println(user);
+            }else if(choice.equalsIgnoreCase("s")){
+                user.sell();
+                System.out.println(user);
+            }else{
+                System.out.println("Invalid input");
             }
+        }
+        System.out.println("WasteD");
+
+    }
+
+    /**
+     * Try to sell merchandise to the buyer, blacklist them if they do not have the money!
+     * @param c the client buying
+     * @return true if the sale succeeded
+     */
+    public boolean sell(Client c){
+        Product toSell = supplier.create();
+        if(blacklist.contains(c)){
+            c.injureSelf((int) toSell.getCost());
+            return false;
+        }
+        try {
+            money += c.buy(toSell);
+            return true;
+        }catch(NotEnoughMoneyException ex){
+            blacklist.add(c);
+            c.injureSelf((int) toSell.getCost());
+            return false;
         }
     }
 
-    /**
-     * The Cartel won't sell to just anyone. In this method, we need to make sure the buyer is legit, hasn't been blacklisted, has enough money, and isn't too picky before we sell.
-     *
-     * @return true if the sale happens, else false
-     * @param buyer the prospective buyer
-     *
-     */
-    public String sellProduct(Client buyer){
-        if(!checkBuyer(buyer)){
-           return "Buyer was bad!";
-        }else if(!merchandise.isEmpty()) {
-            long itemCost = merchandise.peek().getCost();
-            long salePrice = buyer.buy(merchandise.pop());
-            if (salePrice < itemCost) {
-                blacklist.add(buyer);
-                dealWith(buyer);
-            }
-            money += (buyer.buy(merchandise.pop()));
-            return "Sold item to buyer of type " + buyer.getClass();
-        }
-
-        return "Sale failed!";
-    }
-
-    private boolean checkBuyer(Client buyer) {
-        //TODO: Write this method! Check if the buyer is legit!
-        return true;
-    }
-
-    private static void dealWith(Client c){
-        //What was in this method is too explicit to publish. use your imagination
-    }
-
-    /**
-     * The Cartel will be most displeased if we let just anyone supply our merchandise. We need to make sure that our supplier will not scam us with overpriced or bad quality stuff.
-     * @param f the prospective supplier
-     */
-    public void arrangeSupplier(ProductFactory f){
-        //We need to make sure our supplier isn't selling us bad products!
-        this.supplier = f;
-    }
-
-    /**
-     * When the cartel runs out of product, they turn to the supplier.
-     *
-     * @param howMany How many products are we ordering?
-     * @return true if the sale went through fully
-     * @throws NoSupplierException if there isn't a supplier, we throw this exception
-     */
-    public String buyProduct(int howMany) throws NoSupplierException {
-        return "";
-    }
 }

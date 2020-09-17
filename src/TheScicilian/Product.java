@@ -2,7 +2,7 @@ package TheScicilian;
 
 public abstract class Product {
     private static final long cost = 0;
-    private boolean legal;
+    protected boolean legal = true;
 
     public Product(){
     }
